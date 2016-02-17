@@ -4,6 +4,9 @@
  * @author  Noirand
  ************************************************************/
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using System.Collections;
 
 public class CZTopMenu : MonoBehaviour {
@@ -47,7 +50,14 @@ public class CZTopMenu : MonoBehaviour {
 	//---------------------------------------------------
 	public void ClickRead()
 	{
-
+		/* *
+		 * エディタ上なら選択ダイアログを出せる
+		 * .app とか .exe にしたらダイアログは出せない…？
+		 * */
+#if UNITY_EDITOR
+		string sPath = EditorUtility.OpenFilePanel("Load File", "", "cs");
+		Debug.Log(sPath);
+#endif
 	}
 	//---------------------------------------------------
 	// 新規作成ボタンコールバック
