@@ -1,34 +1,29 @@
 ﻿/************************************************************
- * @title	CZColumnHeader.cs
- * @desc	列先頭クラス
+ * @title	CZButton.cs
+ * @desc	汎用ボタンクラス
  * @author	Noirand 2016
  ************************************************************/
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
-using System.Collections.Generic;
 
-public class CZColumnHeader : MonoBehaviour {
+public class CZButton : MonoBehaviour {
 //===========================================================
 // 変数宣言
 //===========================================================
 	//---------------------------------------------------
 	// public
 	//---------------------------------------------------
-	public List<CZParamCell>	CellList	{ get {return m_CellList;} }
-	public SCZDefine.COL_TYPE	ColType		{ get {return (SCZDefine.COL_TYPE)m_SelType.value;} }
+	public void	SetName(string sName)	{m_txtName.text = sName;}
 
-	public string		ColName		{ get {return m_ColName.text;} }
-	public float		ColSizeW	{ get { return m_vColSize.x; } }
+	public string	Name	{ get {return m_txtName.text;} }
 
 	//---------------------------------------------------
 	// private
 	//---------------------------------------------------
-	private List<CZParamCell>	m_CellList;
-
-	private Text		m_ColName;		// 列の名前（変数名）
-	private Dropdown	m_SelType;
-	private Vector2		m_vColSize;
+	private Button		m_Button;
+	private Text		m_txtName;
 
 //===========================================================
 // 関数定義
@@ -38,47 +33,29 @@ public class CZColumnHeader : MonoBehaviour {
 	//---------------------------------------------------
 	void Awake()
 	{
-		m_CellList	= new List<CZParamCell>();
-		m_ColName	= transform.FindChild("InputName").FindChild("Text").GetComponent<Text>();
-		m_SelType	= transform.FindChild("SelType").GetComponent<Dropdown>();
-
-		m_vColSize	= m_ColName.GetComponent<RectTransform>().sizeDelta;
+		m_Button	= GetComponent<Button>();
+		m_txtName	= transform.FindChild("Text").GetComponent<Text>();
 	}
 	//---------------------------------------------------
 	// 最初の更新
 	//---------------------------------------------------
 	void Start()
 	{
-		
+	
 	}
 	//---------------------------------------------------
 	// 更新処理
 	//---------------------------------------------------
 	void Update()
 	{
-
+	
 	}
 	//---------------------------------------------------
-	// セルの生成
+	// コールバックの設定
 	//---------------------------------------------------
-	public CZParamCell CreateCell()
+	public void SetBtnCallBack(UnityAction pAct)
 	{
-		CZParamCell pRet = null;
-
-		if (CZAdministrator.Admin.PrefCell != null)
-		{
-			GameObject pObj = Instantiate(CZAdministrator.Admin.PrefCell) as GameObject;
-			pObj.name = "Cell_" + m_CellList.Count;
-			pObj.transform.SetParent(transform);
-			float fPosY = (SCZDefine.CELL_SIZE.y + 12) * m_CellList.Count * (-1) - 72;
-			pObj.transform.localPosition	= new Vector3(0, fPosY, 0);
-			pObj.transform.localScale		= Vector3.one;
-
-			pRet = pObj.GetComponent<CZParamCell>();
-			m_CellList.Add(pRet);
-		}
-
-		return pRet;
+		m_Button.onClick.AddListener(pAct);
 	}
 	//---------------------------------------------------
 //===========================================================
