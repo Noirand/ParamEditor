@@ -1,31 +1,27 @@
 ﻿/************************************************************
- * @title	CZButton.cs
- * @desc	汎用ボタンクラス
+ * @title	CZSheetSwitcher.cs
+ * @desc	シート（タブ？）切り替えクラス
  * @author	Noirand 2016
  ************************************************************/
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
-public class CZButton : MonoBehaviour {
+public class CZSheetSwitcher : MonoBehaviour {
 //===========================================================
 // 変数宣言
 //===========================================================
 	//---------------------------------------------------
 	// public
 	//---------------------------------------------------
-	public void	SetName(string sName)	{m_txtName.text = sName;}
-
-	public Image	Image	{ get { return m_Image; } }
-	public Text		TxtName	{ get { return m_txtName; } }
+	public List<CZTab>	TabList		{ get {return m_TabList;} }
 
 	//---------------------------------------------------
 	// private
 	//---------------------------------------------------
-	private Button		m_Button;
-	private Text		m_txtName;
-	private Image		m_Image;
+	private List<CZTab>	m_TabList;
+	private ToggleGroup	m_TglGroup;
 
 //===========================================================
 // 関数定義
@@ -35,30 +31,68 @@ public class CZButton : MonoBehaviour {
 	//---------------------------------------------------
 	void Awake()
 	{
-		m_Button	= GetComponent<Button>();
-		m_txtName	= transform.FindChild("Text").GetComponent<Text>();
-		m_Image		= GetComponent<Image>();
+		m_TabList	= new List<CZTab>();
+		m_TglGroup	= GetComponent<ToggleGroup>();
 	}
 	//---------------------------------------------------
 	// 最初の更新
 	//---------------------------------------------------
 	void Start()
 	{
-	
+		// トップメニューをリストに追加しておく
+		CZAdministrator.Admin.CreateTab("TopMenu");
+		//m_TabList[0].Toggle.isOn = true;
 	}
 	//---------------------------------------------------
 	// 更新処理
 	//---------------------------------------------------
 	void Update()
 	{
-	
+		UpdateSheetPriority();
 	}
 	//---------------------------------------------------
-	// コールバックの設定
+	// チェックが入っているシートを最前面に表示
 	//---------------------------------------------------
-	public void SetBtnCallBack(UnityAction pAct)
+	private void UpdateSheetPriority()
 	{
-		m_Button.onClick.AddListener(pAct);
+		string sFrontName = "";
+
+		foreach (CZTab pTab in m_TabList)
+		{
+			if (pTab.IsOn)
+			{
+				sFrontName = pTab.Name;
+				break;
+			}
+		}
+
+		if (sFrontName == "TopMenu")
+		{
+			CZAdministrator.Admin.SheetMng.transform.FindChild(sFrontName).SetAsLastSibling();
+		}
+		else if (sFrontName != "")
+		{
+			foreach (CZTaskSheet pSheet in CZAdministrator.Admin.SheetMng.SheetList)
+			{
+				if (pSheet.name == sFrontName)
+				{
+					pSheet.transform.SetAsLastSibling();
+					break;
+				}
+			}
+		}
+	}
+	//---------------------------------------------------
+	// タブリストに追加
+	//---------------------------------------------------
+	public void AddList(CZTab pTab)
+	{
+		if (m_TabList != null)
+		{
+			m_TabList.Add(pTab);
+			pTab.Toggle.group = m_TglGroup;
+			pTab.Toggle.isOn = true;
+		}
 	}
 	//---------------------------------------------------
 //===========================================================

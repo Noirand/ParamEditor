@@ -65,9 +65,12 @@ public class CZSheetMng : MonoBehaviour {
 				CZTaskSheet pSheet = pObj.GetComponent<CZTaskSheet>();
 				pSheet.transform.SetParent(transform);
 				pSheet.name	= "Sheet_" + m_SheetList.Count;
-				pSheet.transform.localPosition	= Vector3.zero;
+				pSheet.transform.localPosition	= new Vector3(80-560, 0+360, 0);
 				pSheet.transform.localScale		= Vector3.one;
 				m_SheetList.Add(pSheet);
+
+				// つくったシートに対応するタブもつくる
+				CZAdministrator.Admin.CreateTab(pSheet.name);
 			}
 		}
 	}

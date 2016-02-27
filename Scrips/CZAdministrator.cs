@@ -27,6 +27,7 @@ public class CZAdministrator : MonoBehaviour {
 	public GameObject	PrefClmHeader	{ get { return m_PrefClmHeader; } }
 	public GameObject	PrefCell		{ get { return m_PrefCell; } }
 	public GameObject	PrefBtn			{ get { return m_PrefBtn; } }
+	public GameObject	PrefTab			{ get { return m_PrefTab; } }
 
 	//---------------------------------------------------
 	// private
@@ -35,12 +36,14 @@ public class CZAdministrator : MonoBehaviour {
 
 	private EZ_STATE_ID		m_eState;
 	private CZSheetMng		m_SheetMng;
+	private CZSheetSwitcher	m_SheetSwitcher;
 
 	// リソースは全部 Admin が持つことにする？
 	private GameObject		m_PrefSheet;
 	private GameObject		m_PrefClmHeader;
 	private GameObject		m_PrefCell;
 	private GameObject		m_PrefBtn;
+	private GameObject 		m_PrefTab;
 
 //===========================================================
 // 関数定義
@@ -57,6 +60,7 @@ public class CZAdministrator : MonoBehaviour {
 
 		m_eState	= EZ_STATE_ID.INIT;
 		m_SheetMng	= transform.FindChild("SheetRoot").GetComponent<CZSheetMng>();
+		m_SheetSwitcher	= transform.FindChild("TabList").GetComponent<CZSheetSwitcher>();
 
 		InitPrefab();
 	}
@@ -91,6 +95,7 @@ public class CZAdministrator : MonoBehaviour {
 		m_PrefClmHeader	= Resources.Load<GameObject>("Prefabs/Pref_ClmHeader");
 		m_PrefCell		= Resources.Load<GameObject>("Prefabs/Pref_Cell");
 		m_PrefBtn		= Resources.Load<GameObject>("Prefabs/Pref_Btn");
+		m_PrefTab		= Resources.Load<GameObject>("Prefabs/Pref_Tab");
 	}
 	//---------------------------------------------------
 	// ボタン生成
@@ -107,6 +112,33 @@ public class CZAdministrator : MonoBehaviour {
 			pObj.transform.localPosition	= vPos;
 			pObj.transform.localScale		= Vector3.one;
 			pRet = pObj.GetComponent<CZButton>();
+		}
+
+		return pRet;
+	}
+	//---------------------------------------------------
+	// タブ生成
+	//---------------------------------------------------
+	public CZTab CreateTab(string sName="")
+	{
+		CZTab pRet = null;
+
+		if (PrefTab != null)
+		{
+			int iTabNum = m_SheetSwitcher.TabList.Count;
+			GameObject pObj = Instantiate(PrefTab);
+			pObj.transform.SetParent(m_SheetSwitcher.transform);
+			pObj.transform.localPosition = new Vector3(0, -36 * iTabNum + 300, 0);
+			pObj.transform.localScale = Vector3.one;
+			pRet = pObj.GetComponent<CZTab>();
+
+			if (sName != "")
+			{
+				pObj.name = "Tab_" + sName;
+				pRet.SetName(sName);
+			}
+
+			m_SheetSwitcher.AddList(pRet);
 		}
 
 		return pRet;

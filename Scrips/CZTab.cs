@@ -1,31 +1,29 @@
 ﻿/************************************************************
- * @title	CZButton.cs
- * @desc	汎用ボタンクラス
+ * @title	CZTab.cs
+ * @desc	タブ（トグル）クラス
  * @author	Noirand 2016
  ************************************************************/
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
 
-public class CZButton : MonoBehaviour {
+public class CZTab : MonoBehaviour {
 //===========================================================
 // 変数宣言
 //===========================================================
 	//---------------------------------------------------
 	// public
 	//---------------------------------------------------
-	public void	SetName(string sName)	{m_txtName.text = sName;}
-
-	public Image	Image	{ get { return m_Image; } }
-	public Text		TxtName	{ get { return m_txtName; } }
+	public Toggle		Toggle		{ get { return m_Toggle; } }
+	public string		Name		{ get { return m_txLabel.text; } }
+	public bool			IsOn		{ get { return m_Toggle.isOn; } }
 
 	//---------------------------------------------------
 	// private
 	//---------------------------------------------------
-	private Button		m_Button;
-	private Text		m_txtName;
+	private Toggle		m_Toggle;
 	private Image		m_Image;
+	private Text		m_txLabel;
 
 //===========================================================
 // 関数定義
@@ -35,9 +33,9 @@ public class CZButton : MonoBehaviour {
 	//---------------------------------------------------
 	void Awake()
 	{
-		m_Button	= GetComponent<Button>();
-		m_txtName	= transform.FindChild("Text").GetComponent<Text>();
-		m_Image		= GetComponent<Image>();
+		m_Toggle	= GetComponent<Toggle>();
+		m_Image		= transform.FindChild("Background").GetComponent<Image>();
+		m_txLabel	= transform.FindChild("Label").GetComponent<Text>();
 	}
 	//---------------------------------------------------
 	// 最初の更新
@@ -51,14 +49,15 @@ public class CZButton : MonoBehaviour {
 	//---------------------------------------------------
 	void Update()
 	{
-	
+		m_txLabel.color = (IsOn) ? SCZDefine.FOCUS_TEXT_COLOR : SCZDefine.NORMAL_TEXT_COLOR;
+		m_Image.color	= (IsOn) ? SCZDefine.FOCUS_LABEL_COLOR : SCZDefine.NORMAL_LABEL_COLOR;
 	}
 	//---------------------------------------------------
-	// コールバックの設定
+	// 名前設定
 	//---------------------------------------------------
-	public void SetBtnCallBack(UnityAction pAct)
+	public void SetName(string sName)
 	{
-		m_Button.onClick.AddListener(pAct);
+		m_txLabel.text = sName;
 	}
 	//---------------------------------------------------
 //===========================================================
