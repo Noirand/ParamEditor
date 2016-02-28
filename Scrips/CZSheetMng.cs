@@ -70,7 +70,7 @@ public class CZSheetMng : MonoBehaviour {
 				m_SheetList.Add(pSheet);
 
 				// つくったシートに対応するタブもつくる
-				CZAdministrator.Admin.CreateTab(pSheet.name);
+				CZAdministrator.Admin.CreateTab(pSheet.name, pSheet);
 			}
 		}
 	}

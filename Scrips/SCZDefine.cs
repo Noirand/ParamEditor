@@ -42,8 +42,9 @@ public static class SCZDefine {
 	public static readonly Color	NORMAL_TEXT_COLOR	= Color.black;
 
 	//---------------------------------------------------
-	// string 文字数上限
+	// 
 	//---------------------------------------------------
+	public const int	LONG_PRESS_TIME	= 60;
 	public const int	STRING_MAX	= 8;
 	//---------------------------------------------------
 //===========================================================

@@ -119,7 +119,7 @@ public class CZAdministrator : MonoBehaviour {
 	//---------------------------------------------------
 	// タブ生成
 	//---------------------------------------------------
-	public CZTab CreateTab(string sName="")
+	public CZTab CreateTab(string sName="", CZTaskSheet pSheet=null)
 	{
 		CZTab pRet = null;
 
@@ -136,6 +136,11 @@ public class CZAdministrator : MonoBehaviour {
 			{
 				pObj.name = "Tab_" + sName;
 				pRet.SetName(sName);
+			}
+
+			if (pSheet != null)
+			{
+				pRet.SetSheet(pSheet);
 			}
 
 			m_SheetSwitcher.AddList(pRet);

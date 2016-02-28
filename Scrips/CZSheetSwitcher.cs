@@ -74,7 +74,7 @@ public class CZSheetSwitcher : MonoBehaviour {
 		{
 			foreach (CZTaskSheet pSheet in CZAdministrator.Admin.SheetMng.SheetList)
 			{
-				if (pSheet.name == sFrontName)
+				if (pSheet.Name == sFrontName)
 				{
 					pSheet.transform.SetAsLastSibling();
 					break;

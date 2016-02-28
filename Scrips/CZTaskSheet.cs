@@ -20,6 +20,7 @@ public class CZTaskSheet : MonoBehaviour {
 		,RUN
 		,TERM
 	}
+	public void		SetName(string sName)	{m_sName = sName;}
 
 	public string	Name	{ get { return m_sName; } }
 
@@ -73,6 +74,8 @@ public class CZTaskSheet : MonoBehaviour {
 		m_BtnRow.SetName("行追加");
 		m_BtnClm.SetBtnCallBack(ClickAddMember);
 		m_BtnRow.SetBtnCallBack(ClickAddId);
+
+		SetName(this.name);
 	}
 	//---------------------------------------------------
 	// 更新処理
