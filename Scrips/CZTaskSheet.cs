@@ -32,6 +32,7 @@ public class CZTaskSheet : MonoBehaviour {
 	private List<CZColumnHeader>	m_ClmList;
 	private CZButton	m_BtnClm;
 	private CZButton	m_BtnRow;
+	private CZButton	m_BtnWrite;
 	private RectTransform	m_RectTr;
 
 	private string	m_sName;		// シート名
@@ -55,6 +56,7 @@ public class CZTaskSheet : MonoBehaviour {
 	//---------------------------------------------------
 	void Start ()
 	{
+		// 最初のカラムを出す
 		CreateClmHeader();
 		m_BtnClm	= CZAdministrator.Admin.CreateButton(transform, SCZDefine.COL_BTN_POS, "BtnClm");
 		m_BtnRow	= CZAdministrator.Admin.CreateButton(transform, SCZDefine.ROW_BTN_POS, "BtnRow");
@@ -74,6 +76,12 @@ public class CZTaskSheet : MonoBehaviour {
 		m_BtnRow.SetName("行追加");
 		m_BtnClm.SetBtnCallBack(ClickAddMember);
 		m_BtnRow.SetBtnCallBack(ClickAddId);
+
+		// 書き出しボタンを出す
+		m_BtnWrite = CZAdministrator.Admin.CreateButton(
+			CZAdministrator.Admin.trTabList, Vector3.zero, "BtnWrite");
+		m_BtnWrite.SetName("出力");
+		m_BtnWrite.SetBtnCallBack(ClickWrite);
 
 		SetName(this.name);
 	}
@@ -153,6 +161,11 @@ public class CZTaskSheet : MonoBehaviour {
 		Vector2 vSize = m_RectTr.sizeDelta;
 		vSize.x += SCZDefine.CELL_SIZE.x + SCZDefine.CELL_POS_OFS.x;
 		m_RectTr.sizeDelta = vSize;
+	}
+	//---------------------------------------------------
+	public void ClickWrite()
+	{
+		CZFileWriter.Instance.WriteFile(m_ClmList, Name);
 	}
 	//---------------------------------------------------
 //===========================================================

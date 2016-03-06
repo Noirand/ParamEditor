@@ -29,6 +29,8 @@ public class CZAdministrator : MonoBehaviour {
 	public GameObject	PrefBtn			{ get { return m_PrefBtn; } }
 	public GameObject	PrefTab			{ get { return m_PrefTab; } }
 
+	public Transform	trTabList		{ get { return m_trTabList; } }
+
 	//---------------------------------------------------
 	// private
 	//---------------------------------------------------
@@ -37,6 +39,9 @@ public class CZAdministrator : MonoBehaviour {
 	private EZ_STATE_ID		m_eState;
 	private CZSheetMng		m_SheetMng;
 	private CZSheetSwitcher	m_SheetSwitcher;
+
+	private Transform		m_trSheetRoot;
+	private Transform		m_trTabList;
 
 	// リソースは全部 Admin が持つことにする？
 	private GameObject		m_PrefSheet;
@@ -56,13 +61,19 @@ public class CZAdministrator : MonoBehaviour {
 		if (m_Instance == null)
 		{
 			m_Instance = this;
+			new CZFileWriter();
 		}
 
+		m_trSheetRoot	= transform.FindChild("SheetRoot");
+		m_trTabList		= transform.FindChild("TabList");
+
 		m_eState	= EZ_STATE_ID.INIT;
-		m_SheetMng	= transform.FindChild("SheetRoot").GetComponent<CZSheetMng>();
-		m_SheetSwitcher	= transform.FindChild("TabList").GetComponent<CZSheetSwitcher>();
+		m_SheetMng	= m_trSheetRoot.GetComponent<CZSheetMng>();
+		m_SheetSwitcher	= m_trTabList.GetComponent<CZSheetSwitcher>();
 
 		InitPrefab();
+
+		//CZFileWriter.Instance.WriteFile(null);
 	}
 	//---------------------------------------------------
 	// 最初の更新
